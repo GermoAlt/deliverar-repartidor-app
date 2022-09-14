@@ -13,6 +13,25 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    userInfoContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    userTitle: {
+      fontSize: 35,
+      fontWeight: 'bold',
+      marginBottom: 20
+    },
+    userImage: {
+      width: 100,
+      heigth: 100,
+      borderRadius: 50
+    },
+    userName: {
+      fontSize: 20,
+      fontWeight: 'bold'
     }
   });
   
