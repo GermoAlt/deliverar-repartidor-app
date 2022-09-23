@@ -75,8 +75,8 @@ export default function SocialLogin() {
     onPress={() => promptAsync()} 
     mode="contained"
     style={{ marginTop: 20, alignSelf: 'stretch' }}
-    color='rgba(208, 9, 9,0.3)'>
-      Iniciar con Google
+    color='rgba(208, 171, 171,0.12)'>
+      <Text style={{color: 'rgba(208, 9, 9,0.95)'}}>Iniciar con Google</Text>
     </Button>
   );
 }
