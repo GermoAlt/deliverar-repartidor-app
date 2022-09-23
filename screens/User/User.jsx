@@ -1,18 +1,18 @@
-import { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Button, Text, View, SafeAreaView, Image} from 'react-native';
+import TopBar from '../../components/TopBar/TopBar';
 import { UserContext } from '../../contexts/UserContext';
 import styles from './styles';
 
-export default function Home({navigation}) {
+export default function User({navigation}) {
   const {user} = useContext(UserContext);
 
   const ShowUserInfo = () => {
     if(user){
       return (
         <View style={styles.userInfoContainer}>
-          <Text style={styles.userTitle}>Welcome</Text>
           <Image source={{uri: user.picture}} style={styles.userImage} />
-          <Text style={styles.userMore}>{user.name}</Text>
+          <Text style={styles.userName}>{user.name}</Text>
         </View>
       );
     }
@@ -20,15 +20,20 @@ export default function Home({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, flexGrowth:1}} >
+      <TopBar />
       <View style={styles.container}>
-        <View style={styles.item}>
-          <Text>Este es el repartidor:</Text>
+        <View style={styles.summary} >
+          <View style={styles.item}>
+            <Text style={styles.title}>Repartidor:</Text>
+          </View>
+          <View style={styles.item}>
+            {user && <ShowUserInfo />}
+          </View>
         </View>
-        <View style={styles.item}>
-          {user && <ShowUserInfo />}
-        </View>
-        <View style={styles.item}>
-          <Button title="Atrás" onPress={() => navigation.navigate("Home")} />
+        <View style={styles.content}>
+          <View style={styles.item}>
+            <Button title="Atrás" onPress={() => navigation.navigate("Main")} />
+          </View>
         </View>
       </View>
     </SafeAreaView>

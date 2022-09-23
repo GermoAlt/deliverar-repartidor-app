@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { StatusBar, LogBox } from 'react-native';
+import { StatusBar, LogBox, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from './screens/Login/Login';
-import Home from './screens/Home/Home';
+import Main from './screens/Main/Main';
 import User from './screens/User/User';
 
 import { UserContext } from './contexts/UserContext';
@@ -42,13 +42,15 @@ export default function App() {
     <CredentialsContext.Provider value={{credentials,setCredentials}}>
       <UserContext.Provider value={{user,setUser}}>
         <NavigationContainer>
-          <Stack.Navigator>
-            { !!credentials || (user && user.usuario) ? 
-              <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+          <Stack.Navigator >
+            { !!credentials || (user && user.name) ?
+              <>
+                <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
+                <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
+              </>
               : 
               <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
             }
-            <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar />
