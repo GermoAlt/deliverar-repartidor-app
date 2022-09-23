@@ -19,33 +19,30 @@ export default function SocialLogin() {
     webClientId: constants.EXPO_CLIENT_ID,
   });
 
-  const [accessToken, setAccessToken] = useState("");
+  //const [accessToken, setAccessToken] = useState("");
 
   let { user, setUser } = useContext(UserContext);
   let { credentials, setCredentials } = useContext(CredentialsContext);
 
   useEffect(() => {
     if (response?.type === 'success') {
-      console.log("Response", response);
       try{
         const { authentication } = response;
-        console.log(authentication);
         if(authentication){
           console.log("Authentication!")
-          setAccessToken(authentication.accessToken);
-          accessToken && getUserInfo();
+          //setAccessToken(authentication.accessToken);
+          getUserInfo(authentication.accessToken);
         }
         else{
-          let name = "Tobi";
-          let picture = image;
-          setUser({name, picture});
+          console.log("Error: unexpected response")
         }
       }
       catch(err){
         console.log("Error: ", err);
-        let name = "Tobi";
-        let picture = image;
-        setUser({name, picture});
+      }
+
+      return () => {
+        console.log("Unmounting...");
       }
         
         /* 
@@ -56,20 +53,19 @@ export default function SocialLogin() {
         }
         */
     }
-  }, [response, accessToken]);
+  }, [response]);
 
-  const getUserInfo = async () => {
+  const getUserInfo = async (token) => {
     try{
-        let response = await fetch("www.googleapis.com/userinfo/v2/me", {
-            headers: {
-              Authoriztion: `Bearer ${accessToken} `
-            }
+        let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+          headers: { Authorization: `Bearer ${token}` },
         });
-        const userInfo = await response.json(); // if axios is used, this is not needed
+        const userInfo = await userInfoResponse.json(); // if axios is used, this is not needed
         setUser(userInfo);
     }
     catch(err){
-        console.log(err);
+      console.log("Error when retrieving user's data: ")
+      console.log(err);
     }
   }
 
@@ -84,8 +80,6 @@ export default function SocialLogin() {
     </Button>
   );
 }
-
-const image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5P1866Kr9IuDGrLMcddwIFUPdZLeKr-fClUmQE0UjCrbcUZUS09D69ftrPIrn7l983MY&usqp=CAU"
 
 // https://docs.expo.dev/guides/authentication/#development-in-the-expo-go-app
 // https://console.cloud.google.com/apis/credentials/consent?authuser=1&project=deliverar&supportedpurview=project
