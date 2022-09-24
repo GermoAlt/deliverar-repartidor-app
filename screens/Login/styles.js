@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     checkbox: {
       flexDirection: 'row',
       alignItems: 'center',
-      alignSelf: 'flex-end',
+      alignSelf: 'center',
     },
     registerView: {
       flexDirection: 'column',

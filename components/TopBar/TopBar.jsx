@@ -6,6 +6,14 @@ import { CredentialsContext } from '../../contexts/CredentialsContext';
 import { UserContext } from '../../contexts/UserContext';
 import styles from './styles';
  
+const MainMenuAnchor = (openMenu) => {
+  return(
+    <TouchableOpacity onPress={() => openMenu()}>
+          <Button color='white' icon="menu" />
+        </TouchableOpacity>
+  );
+}
+
 const ProfileMenuAnchor = (openMenu) => {
   return(
     <TouchableOpacity  onPress={() => openMenu()}>
@@ -21,11 +29,20 @@ const TopBar = () => {
   let {setUser} = useContext(UserContext);
   let {setCredentials} = useContext(CredentialsContext);
 
+  const [mainVisible, setMainVisible] = useState(false);
+  const openMainMenu = () => setMainVisible(true);
+  const closeMainMenu = () => setMainVisible(false);
+  const goHome = () => {
+    navigation.navigate("Main");
+  };
+
   const [profileVisible, setProfileVisible] = useState(false);
   const openProfileMenu = () => setProfileVisible(true);
   const closeProfileMenu = () => setProfileVisible(false);
-  const goToProfile = () => navigation.navigate("User");
-
+  const goToProfile = () => {
+    closeProfileMenu();
+    navigation.navigate("User");
+  }
 
   const logOut = () => {
     setCredentials(null);
@@ -34,9 +51,12 @@ const TopBar = () => {
 
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
-          <Button color='white' icon="menu" />
-        </TouchableOpacity>
+        <Menu
+          visible={mainVisible}
+          onDismiss={closeMainMenu}
+          anchor={MainMenuAnchor(openMainMenu)}>
+          <Menu.Item onPress={() => goHome()} title="Inicio" />
+        </Menu>
         <Text style={[styles.centerItem]}>Deliverar</Text>
         <Menu
           visible={profileVisible}

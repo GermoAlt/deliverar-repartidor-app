@@ -51,8 +51,8 @@ const Login = ({ navigation }) => {
     }
 
   function onRecordarmeCheckboxClick() {
+    console.log(recordarme);
     setRecordarme(prevState => !prevState);
-    console.log("Recordarme: ", recordarme)
   }
 
   function onRegistrateButtonClick() {
@@ -110,6 +110,8 @@ const Login = ({ navigation }) => {
                             {/* Checkbox */}
                             <View style={styles.checkbox}>
                                 <Checkbox
+                                    uncheckedColor="rgba(208,9,9,0.8)"
+                                    color="rgba(208,9,9,0.8)"
                                     status={recordarme ? 'checked' : 'unchecked'}
                                     onPress={onRecordarmeCheckboxClick}
                                 />
