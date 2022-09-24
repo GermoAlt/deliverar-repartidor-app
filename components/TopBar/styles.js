@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
       alignSelf: 'stretch',
-      height: 60,
+      height: 55,
       flexDirection: 'row', // row
       alignItems: 'center',
       justifyContent: 'space-between', // center, space-around

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import CustomButton from '../../../components/CustomButton/CustomButton';
 import styles from './styles';
 
-const Order = ({navigation}) => {
+const Order = () => {
 
     return (
         <View style={styles.detailsCard}>

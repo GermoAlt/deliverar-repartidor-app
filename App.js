@@ -41,19 +41,19 @@ export default function App() {
   return (
     <CredentialsContext.Provider value={{credentials,setCredentials}}>
       <UserContext.Provider value={{user,setUser}}>
-        <NavigationContainer>
-          <Stack.Navigator >
-            { !!credentials || (user && user.name) ?
-              <>
-                <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
-                <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
-              </>
-              : 
-              <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-            }
-          </Stack.Navigator>
-        </NavigationContainer>
-        <StatusBar />
+          <NavigationContainer>
+            <Stack.Navigator >
+                { !!credentials || (user && user.name) ?
+                  <>
+                    <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
+                    <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
+                  </>
+                  : 
+                  <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+                }
+            </Stack.Navigator>
+          </NavigationContainer>
+          <StatusBar />
       </UserContext.Provider>
     </CredentialsContext.Provider>
   );

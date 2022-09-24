@@ -1,5 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Button, Text, View, SafeAreaView, Image} from 'react-native';
+import { Provider } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import TopBar from '../../components/TopBar/TopBar';
 import { UserContext } from '../../contexts/UserContext';
 import styles from './styles';
@@ -20,22 +22,24 @@ export default function User({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, flexGrowth:1}} >
-      <TopBar />
-      <View style={styles.container}>
-        <View style={styles.summary} >
-          <View style={styles.item}>
-            <Text style={styles.title}>Repartidor:</Text>
+      <Provider>
+        <TopBar />
+        <View style={styles.container}>
+          <View style={styles.summary} >
+            <View style={styles.item}>
+              <Text style={styles.title}>Repartidor:</Text>
+            </View>
+            <View style={styles.item}>
+              {user && <ShowUserInfo />}
+            </View>
           </View>
-          <View style={styles.item}>
-            {user && <ShowUserInfo />}
+          <View style={styles.content}>
+            <View style={styles.item}>
+              <Button title="Atrás" onPress={() => navigation.navigate("Main")} />
+            </View>
           </View>
         </View>
-        <View style={styles.content}>
-          <View style={styles.item}>
-            <Button title="Atrás" onPress={() => navigation.navigate("Main")} />
-          </View>
-        </View>
-      </View>
+      </Provider>
     </SafeAreaView>
   );
 }
