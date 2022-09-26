@@ -14,12 +14,17 @@ import styles from './styles';
 const Order = ({order}) => {
 
     return (
-        <TouchableOpacity style={{height: "100%"}} onPress={() => console.log("Order details...")}>
-            <Surface style={styles.surface} elevation={3}>
+        <TouchableOpacity style={{width: "100%"}} onPress={() => console.log(`Pedido de la empresa ${order.name}`)}>
+            <Surface style={styles.surface} elevation={4}>
                 {order && order.name? 
-                    <View>
-                        <Text style={{color: "white"}}>{order.name}</Text>
-                        <Text style={{color: "white"}}>{order.franchise_address}</Text>
+                    <View style={styles.cardLayout}>
+                        <View style={styles.cardData}>
+                            <Text style={styles.franchise}>Empresa: {order.name}</Text>
+                            <Text style={styles.address}>Dirección: {order.franchise_address}</Text>
+                        </View>
+                        <View style={styles.cardDetails}>
+                            <Text style={styles.details}>Pulsa para ver los detalles</Text>
+                        </View>
                     </View>
                     : 
                     (<Text>Error al obtener datos del pedido</Text>)

@@ -7,14 +7,44 @@ const styles = StyleSheet.create({
     },
     surface: {
       margin: 8,
-      padding: 4,
-      height: "15%",
-      width: "90%",
-      backgroundColor: 'rgba(208,69,69,0.85)',
-      borderRadius: 8,
+      padding: 6,
+      height: "90%",
+      width: "95%",
+      backgroundColor: 'rgba(208,9,9,0.70)',
+      borderRadius: 10,
       alignItems: 'center',
       justifyContent: 'center',
     },
+    cardLayout: {
+      flexDirection: 'row',
+      flex: 1
+    },
+    cardData: {
+      flex: 2.5,
+      padding: 5,
+      justifyContent: 'space-around'
+    },
+    franchise: {
+      color: "white",
+      fontSize: 20,
+      fontWeight: 'bold'
+    },
+    address: {
+      color: "white",
+      fontSize: 16,
+      fontWeight: '500'
+    },
+    cardDetails: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center'
+    },
+    details: {
+      textAlign: 'center',
+      color: "white",
+      fontSize: 13
+    }
   });
   
 export default styles;

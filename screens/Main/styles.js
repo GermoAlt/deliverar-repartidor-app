@@ -4,8 +4,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'flex-start',
-      justifyContent: 'center',
-      display: 'flex',
+      justifyContent: 'flex-start',
       backgroundColor: 'rgba(208,9,9,0.05)'
     },
     currentDelivery: {
@@ -28,12 +27,22 @@ const styles = StyleSheet.create({
       margin: 15
     },
     title: {
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: 'bold'
     },
     orderList: {
+      alignItems: 'center'
+    },
+    listElement: {
       display: 'flex',
-      width: "100%"
+      flexDirection: 'row',
+      marginVertical: 6,
+      height: 120
+    },
+    noOrders: {
+      fontSize: 14,
+      marginVertical: 6,
+      textAlign: 'center'
     }
   });
   
