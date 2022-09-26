@@ -1,20 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native'
 import { Surface, Text } from 'react-native-paper'
-import CustomButton from '../../../components/CustomButton/CustomButton';
 import styles from './styles';
 
-/*
-    <View style={styles.detailsCard}>
-        <Text style={{textAlign: 'center'}}>No has aceptado entregas aún!</Text>
-        <CustomButton title="Ver entregas" onPress={() => console.log("Buscando entregas...")} />
-    </View>
-*/
-
 const Order = ({order}) => {
+    const navigation = useNavigation();
 
     return (
-        <TouchableOpacity style={{width: "100%"}} onPress={() => console.log(`Pedido de la empresa ${order.name}`)}>
+        <TouchableOpacity style={{width: "100%"}} onPress={() => navigation.navigate("OrderDetails", { "order" : order })}>
             <Surface style={styles.surface} elevation={4}>
                 {order && order.name? 
                     <View style={styles.cardLayout}>

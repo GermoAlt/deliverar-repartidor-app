@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Button, Text, View, SafeAreaView, Image} from 'react-native';
-import { Provider } from 'react-native-paper';
+import { Provider, Surface } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import TopBar from '../../components/TopBar/TopBar';
 import { UserContext } from '../../contexts/UserContext';
@@ -25,17 +25,20 @@ export default function User({navigation}) {
       <Provider>
         <TopBar />
         <View style={styles.container}>
-          <View style={styles.summary} >
+          <Surface style={styles.summary} elevation={4} >
             <View style={styles.item}>
               <Text style={styles.title}>Repartidor:</Text>
             </View>
             <View style={styles.item}>
               {user && <ShowUserInfo />}
             </View>
-          </View>
+          </Surface>
+          <View style={styles.item} >
+              <Text style={{fontSize: 22, fontWeight: '600', margin: 10}}>Entregas anteriores:</Text>
+            </View>
           <View style={styles.content}>
             <View style={styles.item}>
-              <Button title="Atrás" onPress={() => navigation.navigate("Main")} />
+              <Text style={{fontSize: 14, fontWeight: '500', marginVertical: 10}}>-- Aún no has realizado entregas --</Text>
             </View>
           </View>
         </View>

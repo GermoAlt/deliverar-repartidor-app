@@ -7,12 +7,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './screens/Login/Login';
 import Main from './screens/Main/Main';
 import User from './screens/User/User';
+import OrderDetails from './screens/OrderDetails/OrderDetails';
 
 import { UserContext } from './contexts/UserContext';
 import { CredentialsContext } from './contexts/CredentialsContext';
-
-import initialUser from './services/user/initialUser';
-import initialCredentials from './services/credentials/initialCredentials';
 
 import { checkLoginCredentials } from './services/credentials/credentialService'
 
@@ -46,6 +44,7 @@ export default function App() {
                 { !!credentials || (user && user.name) ?
                   <>
                     <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
+                    <Stack.Screen name="OrderDetails" component={OrderDetails} options={{headerShown: false}} />
                     <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
                   </>
                   : 

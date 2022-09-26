@@ -10,36 +10,38 @@ const styles = StyleSheet.create({
       flexDirection: 'column'
     },
     summary: {
-      flex: 1,
+      flex: 2,
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       margin: 12.5,
+      padding: 6,
       borderWidth: 2,
-      borderColor: 'rgb(208, 109, 109)',
-      borderRadius: 17.5,
-      backgroundColor: 'rgb(245,234,244)',
+      borderColor: 'rgba(208, 109, 109, 0.85)',
+      borderRadius: 8,
+      backgroundColor: 'rgba(245,234,244,0.85)',
       shadowColor: "black",
       shadowOffset: {
         width: 15.00,
         height: 7.50
       },
-      shadowOpacity: 0.12,
+      shadowOpacity: 0.22,
       shadowRadius: 6
     },
     content: {
-      flex: 3,
+      flex: 4,
       display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start'
     },
     item: {
+      width: '100%',
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
       display: 'flex',
+      marign: 6
     },
     title: {
       fontSize: 24,
