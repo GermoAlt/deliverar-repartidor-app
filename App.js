@@ -13,6 +13,7 @@ import { UserContext } from './contexts/UserContext';
 import { CredentialsContext } from './contexts/CredentialsContext';
 
 import { checkLoginCredentials } from './services/credentials/credentialService'
+import Payments from './screens/Payments/Payments';
 
 LogBox.ignoreAllLogs();
 
@@ -46,6 +47,7 @@ export default function App() {
                     <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
                     <Stack.Screen name="OrderDetails" component={OrderDetails} options={{headerShown: false}} />
                     <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
+                    <Stack.Screen name="Payments" component={Payments} options={{headerShown: false}}/>
                   </>
                   : 
                   <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>

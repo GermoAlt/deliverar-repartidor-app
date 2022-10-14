@@ -6,7 +6,7 @@ import TopBar from '../../components/TopBar/TopBar';
 import Order from '../Order/Order';
 import { pedido } from './testOrder';
 
-const pedidos = [pedido, {...pedido, name: "Starbucks"}, {...pedido, name: "Wendys"}]
+const pedidos = [pedido, {...pedido, name: "Starbucks", franchise_address: "Santa Fe 2290",}, {...pedido, name: "Wendys", franchise_address: "Montañeses 1765"}]
 
 const renderOffer = (item) => {
   return (
@@ -25,7 +25,7 @@ export default function Main() {
         <TopBar/>
         <View style={styles.container}>
           <View style={styles.titleView}>
-            <Text style={styles.title}>Entregas Asignadas</Text>
+            <Text style={styles.title}>Entregas Cercanas</Text>
           </View>
           <ScrollView style={{width: orders.length==0?"95%":"100%"}} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
             { orders && orders.length!==0 ? ( orders.map(order => renderOffer(order)) ) 

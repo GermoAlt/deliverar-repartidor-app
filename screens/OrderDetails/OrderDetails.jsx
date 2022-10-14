@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, Image, ScrollView} from 'react-native';
-import { Button, List } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { Provider } from 'react-native-paper';
 import styles from './styles';
 import TopBar from '../../components/TopBar/TopBar';
@@ -114,27 +114,27 @@ const OrderDetais = () => {
 
     return (
         <SafeAreaView style={{flex: 1, flexGrow:1}} >
-        <Provider>
-            <TopBar/>
-            <View style={styles.container}>
-            <View style={styles.titleView}>
-                <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
-                    <Button color="grey" icon="chevron-left" />
-                </TouchableOpacity>
-                <Text style={styles.title}>Detalles del Pedido:</Text>
-            </View>
-            <View style={styles.orderDetails}>
-                { order? 
-                    renderDetails(order)
-                : 
-                ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
-                    <Text style={styles.noOrders}>-- Error al obtener datos del pedido --</Text>
-                    </View> )
-                }
-            </View>
-                {renderButtons()}
-            </View>
-        </Provider>
+            <Provider>
+                <TopBar/>
+                <View style={styles.container}>
+                    <View style={styles.titleView}>
+                        <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
+                            <Button color="grey" icon="chevron-left" />
+                        </TouchableOpacity>
+                        <Text style={styles.title}>Detalles del Pedido:</Text>
+                    </View>
+                    <View style={styles.orderDetails}>
+                        { order? 
+                            renderDetails(order)
+                        : 
+                        ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
+                            <Text style={styles.noOrders}>-- Error al obtener datos del pedido --</Text>
+                            </View> )
+                        }
+                    </View>
+                    {renderButtons()}
+                </View>
+            </Provider>
         </SafeAreaView>
     );
 }

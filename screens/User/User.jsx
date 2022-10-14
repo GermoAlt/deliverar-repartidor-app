@@ -34,7 +34,7 @@ export default function User({navigation}) {
             </View>
           </Surface>
           <View style={styles.item} >
-              <Text style={{fontSize: 22, fontWeight: '600', margin: 10}}>Entregas anteriores:</Text>
+              <Text style={{fontSize: 22, fontWeight: '600', margin: 10}}>Últimas entregas:</Text>
             </View>
           <View style={styles.content}>
             <View style={styles.item}>
