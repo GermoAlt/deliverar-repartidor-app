@@ -28,10 +28,18 @@ const renderDetails = (order) => {
             </View>
             <View style={styles.detailRow}>
                 <View>
-                    <Text style={styles.textDetailTitle}>Dirección: </Text>
+                    <Text style={styles.textDetailTitle}>Dirección de Retiro: </Text>
                 </View>
                 <View>
                     <Text style={styles.textDetail}>{order.franchise_address}</Text>
+                </View>
+            </View>
+            <View style={styles.detailRow}>
+                <View>
+                    <Text style={styles.textDetailTitle}>Dirección de Entrega: </Text>
+                </View>
+                <View>
+                    <Text style={styles.textDetail}>{order.client_address}</Text>
                 </View>
             </View>
             <View style={styles.detailRow}>
@@ -71,20 +79,58 @@ const renderDetails = (order) => {
     );
 }
 
-const renderButtons = (setDelivery) => {
+const estados = ["Aceptado","Retirado","Entregado"]
+const actions = ["¡Retiré el Pedido!","¡Entregué el Pedido!","Pedido entregado!"]
+
+const renderButtons = (status, handlePress) => {
+    const buttonActionLabel = () => {
+        let buttonLabel = ""
+        switch(status){
+            case estados[0]:
+                buttonLabel = actions[0];
+                break;
+            case estados[1]:
+                buttonLabel = actions[1];
+                break;
+            case estados[2]:
+                buttonLabel = actions[2];
+                break;
+            default:
+                buttonLabel = "No Disponible"
+                break;
+        }
+        return buttonLabel;
+    }
+
+    const handleOnPress = () => {
+        let newStatus = "";
+        switch(status){
+            case estados[0]:
+                newStatus = estados[1];
+                break;
+            case estados[1]:
+                newStatus = estados[2]
+                break;
+            default:
+                newStatus = null;
+                break;
+        }
+        handlePress(newStatus)
+    }
+
     return (
         <View style={styles.buttonLayer}>
             <View style={{ flexDirection: 'column', alignSelf: 'stretch' }}>
                 <Button
                     icon="check-bold"
                     mode="contained"
-                    onPress={() => setDelivery()}
+                    onPress={() => handleOnPress()}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={false}
+                    disabled={!estados.includes(status)}
                     loading={false}
                     color='rgb(208, 9, 9)'
                 >
-                    Aceptar
+                    {buttonActionLabel()}
                 </Button>
             </View>
             <View style={{ flexDirection: 'column', alignSelf: 'stretch' }}>
@@ -93,35 +139,29 @@ const renderButtons = (setDelivery) => {
                     mode="contained"
                     onPress={() => console.log("Rechazar!!")}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={false}
+                    disabled={!status}
                     loading={false}
                     color='rgba(0, 0, 0,0.16)'
                 >
-                    Rechazar
+                    Darme de baja
                 </Button>
             </View>
         </View>
     );
 }
 
-const OrderDetais = () => {
+const CurrentOrderDetails = () => {
     const navigation = useNavigation()
-    const route = useRoute()
-    const order = route.params.order;
-    const {setCurrentDelivery} = useContext(DeliveryContext);
+    const {currentDelivery, setCurrentDelivery} = useContext(DeliveryContext);
 
     const goBack = () => {
         navigation.goBack();
     }
 
-    const setDelivery = () => {
-        console.log("Seteando delivery!");
-        setCurrentDelivery({...order,id: 175362, status: "Aceptado"});
+    const handleUpdateStatus = (newStatus) => {
+        setCurrentDelivery({...currentDelivery, status: newStatus});
         goBack();
-        // remove fron available deliveries
     }
-
-    // Method to remove order from available orders' list
 
     return (
         <SafeAreaView style={{flex: 1, flexGrow:1}} >
@@ -132,22 +172,22 @@ const OrderDetais = () => {
                         <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
                             <Button color="grey" icon="chevron-left" />
                         </TouchableOpacity>
-                        <Text style={styles.title}>Detalles del Pedido:</Text>
+                        <Text style={styles.title}>Número de Pedido: #{currentDelivery.id}</Text>
                     </View>
                     <View style={styles.orderDetails}>
                         { order? 
-                            renderDetails(order)
+                            renderDetails(currentDelivery)
                         : 
                         ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
                             <Text style={styles.noOrders}>-- Error al obtener datos del pedido --</Text>
                             </View> )
                         }
                     </View>
-                    {renderButtons(setDelivery)}
+                    {renderButtons(currentDelivery.status, handleUpdateStatus)}
                 </View>
             </Provider>
         </SafeAreaView>
     );
 }
 
-export default OrderDetais;
+export default CurrentOrderDetails;

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, View, SafeAreaView, ScrollView} from 'react-native';
 import { Provider } from 'react-native-paper';
 import styles from './styles';
 import TopBar from '../../components/TopBar/TopBar';
-import Order from '../Order/Order';
+import Order from '../../components/Order/Order';
+import CurrentDelivery from '../CurrentDelivery/CurrentDelivery';
+
 import { pedido } from './testOrder';
+import { DeliveryContext } from '../../contexts/DeliveryContext';
 
 const pedidos = [pedido, {...pedido, name: "Starbucks", franchise_address: "Santa Fe 2290",}, {...pedido, name: "Wendys", franchise_address: "Montañeses 1765"}]
 
@@ -17,6 +20,7 @@ const renderOffer = (item) => {
 }
 
 export default function Main() {
+  const {currentDelivery} = useContext(DeliveryContext);
   const [orders, setOrders] = useState(pedidos)
 
   return (
@@ -24,6 +28,11 @@ export default function Main() {
       <Provider>
         <TopBar/>
         <View style={styles.container}>
+          {
+            currentDelivery ? 
+            (<CurrentDelivery delivery={currentDelivery}/>) :
+            <></>
+          }
           <View style={styles.titleView}>
             <Text style={styles.title}>Entregas Cercanas</Text>
           </View>

@@ -8,9 +8,11 @@ import Login from './screens/Login/Login';
 import Main from './screens/Main/Main';
 import User from './screens/User/User';
 import OrderDetails from './screens/OrderDetails/OrderDetails';
+import CurrentOrderDetails from './screens/CurrentOrderDetails/CurrentOrderDetails';
 
 import { UserContext } from './contexts/UserContext';
 import { CredentialsContext } from './contexts/CredentialsContext';
+import { DeliveryContext } from './contexts/DeliveryContext';
 
 import { checkLoginCredentials } from './services/credentials/credentialService'
 import Payments from './screens/Payments/Payments';
@@ -22,6 +24,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [user, setUser] = useState(null);
   const [credentials, setCredentials] = useState(null)
+  const [currentDelivery, setCurrentDelivery] = useState(null);
 
   /*useEffect(() => {
     try{
@@ -40,12 +43,14 @@ export default function App() {
   return (
     <CredentialsContext.Provider value={{credentials,setCredentials}}>
       <UserContext.Provider value={{user,setUser}}>
+        <DeliveryContext.Provider value={{currentDelivery,setCurrentDelivery}}>
           <NavigationContainer>
             <Stack.Navigator >
                 { !!credentials || (user && user.name) ?
                   <>
                     <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
                     <Stack.Screen name="OrderDetails" component={OrderDetails} options={{headerShown: false}} />
+                    <Stack.Screen name="CurrentOrderDetails" component={CurrentOrderDetails} options={{headerShown: false}} />
                     <Stack.Screen name="User" component={User} options={{headerShown: false}}/>
                     <Stack.Screen name="Payments" component={Payments} options={{headerShown: false}}/>
                   </>
@@ -55,6 +60,7 @@ export default function App() {
             </Stack.Navigator>
           </NavigationContainer>
           <StatusBar />
+        </DeliveryContext.Provider>
       </UserContext.Provider>
     </CredentialsContext.Provider>
   );
