@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       backgroundColor: 'rgba(208,9,9,0.05)'

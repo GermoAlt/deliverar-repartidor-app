@@ -71,7 +71,7 @@ const renderDetails = (order) => {
     );
 }
 
-const renderButtons = (setDelivery) => {
+const renderButtons = (currentDelivery,setDelivery) => {
     return (
         <View style={styles.buttonLayer}>
             <View style={{ flexDirection: 'column', alignSelf: 'stretch' }}>
@@ -80,7 +80,7 @@ const renderButtons = (setDelivery) => {
                     mode="contained"
                     onPress={() => setDelivery()}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={false}
+                    disabled={currentDelivery && currentDelivery.id}
                     loading={false}
                     color='rgb(208, 9, 9)'
                 >
@@ -108,7 +108,7 @@ const OrderDetais = () => {
     const navigation = useNavigation()
     const route = useRoute()
     const order = route.params.order;
-    const {setCurrentDelivery} = useContext(DeliveryContext);
+    const {currentDelivery, setCurrentDelivery} = useContext(DeliveryContext);
 
     const goBack = () => {
         navigation.goBack();
@@ -143,7 +143,7 @@ const OrderDetais = () => {
                             </View> )
                         }
                     </View>
-                    {renderButtons(setDelivery)}
+                    {renderButtons(currentDelivery,setDelivery)}
                 </View>
             </Provider>
         </SafeAreaView>

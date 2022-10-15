@@ -126,7 +126,7 @@ const renderButtons = (status, handlePress) => {
                     mode="contained"
                     onPress={() => handleOnPress()}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={!estados.includes(status)}
+                    disabled={![...estados].filter(st => st !== "Entregado").includes(status)}
                     loading={false}
                     color='rgb(208, 9, 9)'
                 >
@@ -139,7 +139,7 @@ const renderButtons = (status, handlePress) => {
                     mode="contained"
                     onPress={() => console.log("Rechazar!!")}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={!status}
+                    disabled={status !== estados[0]}
                     loading={false}
                     color='rgba(0, 0, 0,0.16)'
                 >
@@ -175,7 +175,7 @@ const CurrentOrderDetails = () => {
                         <Text style={styles.title}>Número de Pedido: #{currentDelivery.id}</Text>
                     </View>
                     <View style={styles.orderDetails}>
-                        { order? 
+                        { currentDelivery? 
                             renderDetails(currentDelivery)
                         : 
                         ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>

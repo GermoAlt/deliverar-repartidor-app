@@ -14,9 +14,9 @@ const CurrentOrder = ({delivery}) => {
                     <View style={styles.cardLayout}>
                         <View style={styles.cardData}>
                             <Text style={styles.franchise}>Empresa: {delivery.name}</Text>
-                            <Text style={styles.franchise}>Estado: {delivery.status}</Text>
-                            <Text style={styles.address}>Retira en: {delivery.franchise_address}</Text>
-                            <Text style={styles.address}>Entrega en: {delivery.client_address}</Text>
+                            <Text style={{...styles.franchise,fontSize: 16, marginVertical: 4, fontWeight: '500'}}>Estado: {delivery.status}</Text>
+                            <Text style={{...styles.address,fontSize: 14}}>Retira en: {delivery.franchise_address}</Text>
+                            <Text style={{...styles.address,fontSize: 14}}>Entrega en: {delivery.client_address}</Text>
                         </View>
                         <View style={styles.cardDetails}>
                             <Text style={styles.details}>Pulsa para ver los detalles</Text>
