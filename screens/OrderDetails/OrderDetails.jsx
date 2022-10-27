@@ -116,7 +116,7 @@ const OrderDetais = () => {
 
     const setDelivery = () => {
         console.log("Seteando delivery!");
-        setCurrentDelivery({...order,id: 175362, status: "Aceptado"});
+        setCurrentDelivery({...order,id: 1762, status: "Aceptado"});
         goBack();
         // remove fron available deliveries
     }

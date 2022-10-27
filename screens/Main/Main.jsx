@@ -29,7 +29,7 @@ export default function Main() {
         <TopBar/>
         <View style={styles.container}>
           {
-            currentDelivery ? 
+            currentDelivery && currentDelivery.status !== "Entregado" ? 
             (<CurrentDelivery delivery={currentDelivery}/>) :
             <></>
           }
@@ -37,7 +37,7 @@ export default function Main() {
             <Text style={styles.title}>Entregas Cercanas</Text>
           </View>
           <ScrollView style={{width: orders.length==0?"95%":"100%"}} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
-            { orders && orders.length!==0 ? ( orders.map(order => renderOffer(order)) ) 
+            { orders && orders.length!==0 ? ( orders.filter(order => currentDelivery ? order.name !== currentDelivery.name : true).map(order => renderOffer(order)) ) 
             : 
               ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
                   <Text style={styles.noOrders}>-- Aún no tenés entregas asignadas --</Text>

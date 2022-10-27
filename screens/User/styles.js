@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
       shadowRadius: 6
     },
     content: {
-      flex: 4,
+      flex: 5,
       display: 'flex',
       justifyContent: 'flex-start',
       alignItems: 'flex-start'
@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       display: 'flex',
       marign: 6
+    },
+    listElement: {
+      display: 'flex',
+      flexDirection: 'row',
+      marginVertical: 6,
+      height: 120
     },
     title: {
       fontSize: 24,
