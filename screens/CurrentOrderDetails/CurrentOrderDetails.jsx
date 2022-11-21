@@ -165,8 +165,8 @@ const CurrentOrderDetails = () => {
     const handleUpdateStatus = (newStatus) => {
         try{
             console.log("Actualizando delivery!");
-            //let res = await updateCurrentOrder(user.id,{status: newStatus});
-            let res = updateCurrentOrder(user.id,{status: newStatus});
+            //let res = await updateCurrentOrder(user.idUser,{status: newStatus});
+            let res = updateCurrentOrder(user.idUser,{status: newStatus});
             console.log("Updated order res: ", res);
             if(res){
                 setCurrentDelivery({...currentDelivery, status: newStatus});
@@ -191,7 +191,7 @@ const CurrentOrderDetails = () => {
                         <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
                             <Button color="grey" icon="chevron-left" />
                         </TouchableOpacity>
-                        <Text style={styles.title}>Numero de {currentDelivery.orderType}: #{currentDelivery.id}</Text>
+                        <Text style={styles.title}>Numero de {currentDelivery.orderType ? currentDelivery.orderType : "Pedido"}: #{currentDelivery.id}</Text>
                     </View>
                     <View style={styles.orderDetails}>
                         { currentDelivery? 

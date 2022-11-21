@@ -1,5 +1,5 @@
-const baseURL = "https://repartidor.deliver.ar"
-const apiURL = "" // "/deliverar/v1"
+const baseURL = "http://repartidor.deliver.ar"
+const apiURL = "/deliverar/v1";
 
 export function executeApiCall(endpoint, method, content) {
     if(method !== "GET") {

@@ -14,7 +14,7 @@ export default function User() {
   useEffect(/*async*/ () => {
     try{
       //const ordenesPrevias = await getOrdersForUser(user).json();
-      const ordenesPrevias = getOrdersForUser(user.id);
+      const ordenesPrevias = getOrdersForUser(user.idUser);
       console.log("Prev Orders: ", ordenesPrevias);
       if(ordenesPrevias){
         setPrevOrders(ordenesPrevias);

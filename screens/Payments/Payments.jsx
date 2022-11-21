@@ -51,7 +51,7 @@ const Payments = ({navigation}) => {
     useEffect(/*async*/ () => {
         try{
             //let res = await getPayments(user.name);
-            let res = getPayments(user.id);
+            let res = getPayments(user.idUser);
             if(res){
                 setPayments(res);
             }

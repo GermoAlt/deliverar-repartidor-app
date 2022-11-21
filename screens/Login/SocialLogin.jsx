@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useEffect, useContext} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
-//import CustomButton from '../../components/CustomButton/CustomButton';
 import { Text,Button } from 'react-native-paper'; 
 
 import constants from '../../services/credentials/constants'
@@ -21,9 +20,7 @@ export default function SocialLogin() {
     webClientId: constants.EXPO_CLIENT_ID,
   });
 
-  //const [accessToken, setAccessToken] = useState("");
-
-  let { user, setUser } = useContext(UserContext);
+  let { setUser } = useContext(UserContext);
   //let { credentials, setCredentials } = useContext(CredentialsContext);
 
   useEffect(() => {
@@ -32,7 +29,6 @@ export default function SocialLogin() {
         const { authentication } = response;
         if(authentication){
           console.log("Authentication!")
-          //setAccessToken(authentication.accessToken);
           getUserInfo(authentication.accessToken);
         }
         else{
@@ -47,13 +43,13 @@ export default function SocialLogin() {
         console.log("Unmounting...");
       }
         
-        /* 
+      /* 
         persistCredentials(authentication).then(creds => {
             console.log("Credentials saved successfully!");
         }).cacth(err){
             console.log("Error when persisting Google credentials");
         }
-        */
+      */
     }
   }, [response]);
 
@@ -63,11 +59,10 @@ export default function SocialLogin() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const userInfo = await userInfoResponse.json(); // if axios is used, this is not needed
-      //let res = await userLogin(userInfo).json();
-      let res = userLogin(userInfo);
-      console.log("Login response: ", res);
-      if(res){
-        setUser(userInfo);
+      const res = await userLogin(userInfo);
+      const data = await res.json();
+      if(data && data.data && data.data.id){
+        setUser({...userInfo, "idUser": data.data.id});
       }
       else{
         throw new Error("Error al iniciar sesion");
