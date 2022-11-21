@@ -7,7 +7,9 @@ import { Text,Button } from 'react-native-paper';
 import constants from '../../services/credentials/constants'
 
 import { UserContext } from '../../contexts/UserContext';
-import { CredentialsContext } from '../../contexts/CredentialsContext';
+//import { CredentialsContext } from '../../contexts/CredentialsContext';
+
+import { userLogin } from '../../services/user/userService';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -22,7 +24,7 @@ export default function SocialLogin() {
   //const [accessToken, setAccessToken] = useState("");
 
   let { user, setUser } = useContext(UserContext);
-  let { credentials, setCredentials } = useContext(CredentialsContext);
+  //let { credentials, setCredentials } = useContext(CredentialsContext);
 
   useEffect(() => {
     if (response?.type === 'success') {
@@ -57,11 +59,19 @@ export default function SocialLogin() {
 
   const getUserInfo = async (token) => {
     try{
-        let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const userInfo = await userInfoResponse.json(); // if axios is used, this is not needed
+      let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const userInfo = await userInfoResponse.json(); // if axios is used, this is not needed
+      //let res = await userLogin(userInfo).json();
+      let res = userLogin(userInfo);
+      console.log("Login response: ", res);
+      if(res){
         setUser(userInfo);
+      }
+      else{
+        throw new Error("Error al iniciar sesion");
+      }
     }
     catch(err){
       console.log("Error when retrieving user's data: ")

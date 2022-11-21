@@ -15,14 +15,14 @@ const CurrentDelivery = ({delivery}) => {
     return (
       <View style={styles.container}>
         <View style={styles.titleView}>
-            <Text style={styles.title}>Pedido En Curso</Text>
+            <Text style={styles.title}>Entrega En Curso</Text>
         </View>
         <View style={{width: "100%"}} >
             {delivery ?
                 renderDelivery(delivery)
                 : 
                 ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
-                    <Text style={styles.noOrders}>-- Error al obtener datos del pedido en curso --</Text>
+                    <Text style={styles.noOrders}>-- Error al obtener datos del envío en curso --</Text>
                 </View> )
             }
         </View>

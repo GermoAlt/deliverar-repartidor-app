@@ -6,6 +6,9 @@ import styles from './styles';
 import TopBar from '../../components/TopBar/TopBar';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { DeliveryContext } from '../../contexts/DeliveryContext';
+import { UserContext } from '../../contexts/UserContext';
+
+import { updateCurrentOrder } from '../../services/order/orderService';
 
 const getTotal = (order) => {
     let total = 0;
@@ -152,6 +155,7 @@ const renderButtons = (status, handlePress) => {
 
 const CurrentOrderDetails = () => {
     const navigation = useNavigation()
+    const {user} = useContext(UserContext);
     const {currentDelivery, setCurrentDelivery} = useContext(DeliveryContext);
 
     const goBack = () => {
@@ -159,8 +163,23 @@ const CurrentOrderDetails = () => {
     }
 
     const handleUpdateStatus = (newStatus) => {
-        setCurrentDelivery({...currentDelivery, status: newStatus});
-        goBack();
+        try{
+            console.log("Actualizando delivery!");
+            //let res = await updateCurrentOrder(user.id,{status: newStatus});
+            let res = updateCurrentOrder(user.id,{status: newStatus});
+            console.log("Updated order res: ", res);
+            if(res){
+                setCurrentDelivery({...currentDelivery, status: newStatus});
+                goBack();
+            }
+            else{
+                throw new Error("No se pudo actualizar la orden actual");
+            }
+        }
+        catch(err){
+            console.log("Error al actualizar la orden actual");
+            console.log(err);
+        }
     }
 
     return (
@@ -172,7 +191,7 @@ const CurrentOrderDetails = () => {
                         <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
                             <Button color="grey" icon="chevron-left" />
                         </TouchableOpacity>
-                        <Text style={styles.title}>Número de Pedido: #{currentDelivery.id}</Text>
+                        <Text style={styles.title}>Numero de {currentDelivery.orderType}: #{currentDelivery.id}</Text>
                     </View>
                     <View style={styles.orderDetails}>
                         { currentDelivery? 

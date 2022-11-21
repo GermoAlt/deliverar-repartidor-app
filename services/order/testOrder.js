@@ -1,4 +1,5 @@
 export const pedido = {
+  orderType: "Pedido",
   name: "McDonalds",
   franchise_address: "Cabildo 830",
   client_address: "Arribeños 1724",

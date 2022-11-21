@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Text, View, SafeAreaView, ScrollView} from 'react-native';
 import { Provider } from 'react-native-paper';
 import styles from './styles';
@@ -6,10 +6,10 @@ import TopBar from '../../components/TopBar/TopBar';
 import Order from '../../components/Order/Order';
 import CurrentDelivery from '../CurrentDelivery/CurrentDelivery';
 
-import { pedido } from './testOrder';
 import { DeliveryContext } from '../../contexts/DeliveryContext';
 
-const pedidos = [pedido, {...pedido, name: "Starbucks", franchise_address: "Santa Fe 2290",}, {...pedido, name: "Wendys", franchise_address: "Montañeses 1765"}]
+import { getOrders } from '../../services/order/orderService';
+
 
 const renderOffer = (item) => {
   return (
@@ -21,10 +21,27 @@ const renderOffer = (item) => {
 
 export default function Main() {
   const {currentDelivery} = useContext(DeliveryContext);
-  const [orders, setOrders] = useState(pedidos)
+  const [orders, setOrders] = useState([])
+
+  useEffect(/*async*/ () => {
+    try{
+      //const pedidos = await getOrders().json();
+      const pedidos = getOrders();
+      console.log("Orders retrieved!")
+      if(pedidos){
+        setOrders(pedidos)
+      }
+      else{
+        throw new Error("Ocurrio un error al buscar las ordenes disponibles");
+      }
+    }catch(err){
+      console.log("Error al obtener ordenes");
+      console.log(err);
+    }
+  })
 
   return (
-    <SafeAreaView style={{flex: 1, flexGrow:1}} >
+    <SafeAreaView style={{flex: 1, flexGrow: 1}} >
       <Provider>
         <TopBar/>
         <View style={styles.container}>

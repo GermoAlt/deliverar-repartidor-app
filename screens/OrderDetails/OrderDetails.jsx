@@ -5,7 +5,9 @@ import { Provider } from 'react-native-paper';
 import styles from './styles';
 import TopBar from '../../components/TopBar/TopBar';
 import { useRoute, useNavigation } from '@react-navigation/native';
+
 import { DeliveryContext } from '../../contexts/DeliveryContext';
+import { createCurrentOrder } from '../../services/order/orderService';
 
 const getTotal = (order) => {
     let total = 0;
@@ -71,7 +73,7 @@ const renderDetails = (order) => {
     );
 }
 
-const renderButtons = (currentDelivery,setDelivery) => {
+const renderButtons = (order,setDelivery) => {
     return (
         <View style={styles.buttonLayer}>
             <View style={{ flexDirection: 'column', alignSelf: 'stretch' }}>
@@ -80,7 +82,7 @@ const renderButtons = (currentDelivery,setDelivery) => {
                     mode="contained"
                     onPress={() => setDelivery()}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={currentDelivery && currentDelivery.id}
+                    disabled={order && order.status === "Entregado"}
                     loading={false}
                     color='rgb(208, 9, 9)'
                 >
@@ -114,11 +116,24 @@ const OrderDetais = () => {
         navigation.goBack();
     }
 
-    const setDelivery = () => {
-        console.log("Seteando delivery!");
-        setCurrentDelivery({...order,id: 1762, status: "Aceptado"});
-        goBack();
-        // remove fron available deliveries
+    const setDelivery = async () => {
+        try{
+            console.log("Seteando delivery!");
+            //let res = await createCurrentOrder({...order, status: "Aceptado"});
+            let res = createCurrentOrder({...order, status: "Aceptado"});
+            console.log("New order res: ", res);
+            if(res){
+                setCurrentDelivery({...order,id: 1762, status: "Aceptado"});
+                goBack();
+            }
+            else{
+                throw new Error("No se pudo crear la nueva orden actual");
+            }
+        }
+        catch(err){
+            console.log("Error al tomar la nueva orden");
+            console.log(err);
+        }
     }
 
     // Method to remove order from available orders' list
@@ -132,7 +147,7 @@ const OrderDetais = () => {
                         <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
                             <Button color="grey" icon="chevron-left" />
                         </TouchableOpacity>
-                        <Text style={styles.title}>Detalles del Pedido:</Text>
+                        <Text style={styles.title}>Detalles del {order.orderType}:</Text>
                     </View>
                     <View style={styles.orderDetails}>
                         { order? 
@@ -140,10 +155,10 @@ const OrderDetais = () => {
                         : 
                         ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
                             <Text style={styles.noOrders}>-- Error al obtener datos del pedido --</Text>
-                            </View> )
+                          </View> )
                         }
                     </View>
-                    {renderButtons(currentDelivery,setDelivery)}
+                    {renderButtons(order,setDelivery)}
                 </View>
             </Provider>
         </SafeAreaView>

@@ -1,23 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Text, View, SafeAreaView, TouchableOpacity, ScrollView} from 'react-native';
 import { Button, Provider } from 'react-native-paper';
 import styles from './styles';
 import TopBar from '../../components/TopBar/TopBar';
+import { getPayments } from '../../services/payment/paymentService';
 
-const initPayments = [
-    {
-        mes: "Octubre",
-        ingreso: 24500
-    },
-    {
-        mes: "Septiembre",
-        ingreso: 18000
-    },
-    {
-        mes: "Agosto",
-        ingreso: 21350
-    },
-]
+import { UserContext } from '../../contexts/UserContext'; 
 
 const PaymentHeader = () => {
     return (
@@ -54,10 +42,28 @@ const SinglePayment = ({payment}) => {
 }
 
 const Payments = ({navigation}) => {
-    const [payments, setPayments] = useState([...initPayments]);
+    const [payments, setPayments] = useState([]);
+    const {user} = useContext(UserContext);
     const goBack = () => {
         navigation.goBack();
     }
+
+    useEffect(/*async*/ () => {
+        try{
+            //let res = await getPayments(user.name);
+            let res = getPayments(user.id);
+            if(res){
+                setPayments(res);
+            }
+            else{
+                throw new Error("No se pudieron recuperar los pagos");
+            }
+        }
+        catch(err){
+            console.log("Error al intentar recuperar información de pagos para el usuario:")
+            console.log(err);
+        }
+    },[]);
 
 
     return (

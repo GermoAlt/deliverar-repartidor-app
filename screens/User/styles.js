@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     },
     userName: {
       fontSize: 22,
-      margin: 10,
+      marginVertical: 10,
       fontWeight: 'bold',
       color: 'rgba(0,0,0,0.8)'
     }
