@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useEffect, useContext} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
-//import CustomButton from '../../components/CustomButton/CustomButton';
 import { Text,Button } from 'react-native-paper'; 
 
 import constants from '../../services/credentials/constants'
 
 import { UserContext } from '../../contexts/UserContext';
-import { CredentialsContext } from '../../contexts/CredentialsContext';
+//import { CredentialsContext } from '../../contexts/CredentialsContext';
+
+import { userLogin } from '../../services/user/userService';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -19,10 +20,8 @@ export default function SocialLogin() {
     webClientId: constants.EXPO_CLIENT_ID,
   });
 
-  //const [accessToken, setAccessToken] = useState("");
-
-  let { user, setUser } = useContext(UserContext);
-  let { credentials, setCredentials } = useContext(CredentialsContext);
+  let { setUser } = useContext(UserContext);
+  //let { credentials, setCredentials } = useContext(CredentialsContext);
 
   useEffect(() => {
     if (response?.type === 'success') {
@@ -30,7 +29,6 @@ export default function SocialLogin() {
         const { authentication } = response;
         if(authentication){
           console.log("Authentication!")
-          //setAccessToken(authentication.accessToken);
           getUserInfo(authentication.accessToken);
         }
         else{
@@ -45,23 +43,30 @@ export default function SocialLogin() {
         console.log("Unmounting...");
       }
         
-        /* 
+      /* 
         persistCredentials(authentication).then(creds => {
             console.log("Credentials saved successfully!");
         }).cacth(err){
             console.log("Error when persisting Google credentials");
         }
-        */
+      */
     }
   }, [response]);
 
   const getUserInfo = async (token) => {
     try{
-        let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const userInfo = await userInfoResponse.json(); // if axios is used, this is not needed
-        setUser(userInfo);
+      let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const userInfo = await userInfoResponse.json(); // if axios is used, this is not needed
+      const res = await userLogin(userInfo);
+      const data = await res.json();
+      if(data && data.data && data.data.id){
+        setUser({...userInfo, "idUser": data.data.id});
+      }
+      else{
+        throw new Error("Error al iniciar sesion");
+      }
     }
     catch(err){
       console.log("Error when retrieving user's data: ")

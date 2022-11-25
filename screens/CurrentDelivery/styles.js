@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
       backgroundColor: 'rgba(208,9,9,0.05)'
@@ -40,9 +39,8 @@ const styles = StyleSheet.create({
       height: 120
     },
     noOrders: {
-      fontSize: 16,
+      fontSize: 14,
       marginVertical: 6,
-      fontWeight: '600',
       textAlign: 'center'
     }
   });

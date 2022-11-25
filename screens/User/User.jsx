@@ -1,13 +1,45 @@
-import React, { useEffect, useContext } from 'react';
-import { Button, Text, View, SafeAreaView, Image} from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { Text, View, SafeAreaView, Image, ScrollView} from 'react-native';
 import { Provider, Surface } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 import TopBar from '../../components/TopBar/TopBar';
+import CurrentOrder from '../../components/CurrentOrder/CurrentOrder';
 import { UserContext } from '../../contexts/UserContext';
 import styles from './styles';
+import { getOrdersForUser } from '../../services/order/orderService';
 
-export default function User({navigation}) {
+export default function User() {
   const {user} = useContext(UserContext);
+  const [prevOrders, setPrevOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchPrevOrders = async () => {
+      try{
+        console.log("Getting user's orders");
+        const res = await getOrdersForUser(user.idUser);
+        const ordenesPrevias = await res.json();
+        console.log("Previous Orders adquired!");
+        if(ordenesPrevias && ordenesPrevias.data){
+          console.log("Ordenes del usuario: ", ordenesPrevias.data);
+          setPrevOrders(ordenesPrevias.data);
+        }
+        else{
+          throw new Error("No se obtuvo la respuesta esperada");
+        }
+      }catch(err){
+        console.log("Error al obtener ordenes previas para el usuario");
+        console.log(err);
+      }
+    }
+    fetchPrevOrders();
+  },[]);
+
+  const renderPrevOrder = (order) => {
+    return (
+      <View key={[...prevOrders].indexOf(order)} style={styles.listElement} >
+        <CurrentOrder key={[...prevOrders].indexOf(order)} style={{flex: 1}} delivery={order}/>
+      </View>
+    )
+  }
 
   const ShowUserInfo = () => {
     if(user){
@@ -27,19 +59,27 @@ export default function User({navigation}) {
         <View style={styles.container}>
           <Surface style={styles.summary} elevation={4} >
             <View style={styles.item}>
-              <Text style={styles.title}>Repartidor:</Text>
+              <Text style={{...styles.title, paddingLeft: 6}}>Repartidor:</Text>
             </View>
             <View style={styles.item}>
               {user && <ShowUserInfo />}
             </View>
           </Surface>
           <View style={styles.item} >
-              <Text style={{fontSize: 22, fontWeight: '600', margin: 10}}>Entregas anteriores:</Text>
-            </View>
+            <Text style={{fontSize: 22, fontWeight: '600', margin: 10}}>Últimas entregas:</Text>
+          </View>
           <View style={styles.content}>
-            <View style={styles.item}>
-              <Text style={{fontSize: 14, fontWeight: '500', marginVertical: 10}}>-- Aún no has realizado entregas --</Text>
-            </View>
+            <ScrollView style={{marginTop: '-5%', width: prevOrders.length!=0?"95%":"100%"}} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
+            {
+              prevOrders && prevOrders.length!=0 ? 
+              (
+                prevOrders.map(order => renderPrevOrder(order)) 
+              ) :
+              (<View style={styles.item}>
+                <Text style={{fontSize: 14, fontWeight: '500', marginVertical: 10}}>-- Aún no has realizado entregas --</Text>
+              </View>)
+            }
+            </ScrollView>
           </View>
         </View>
       </Provider>

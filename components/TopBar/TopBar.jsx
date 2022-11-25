@@ -8,9 +8,9 @@ import styles from './styles';
  
 const MainMenuAnchor = (openMenu) => {
   return(
-    <TouchableOpacity onPress={() => openMenu()}>
-          <Button color='white' icon="menu" />
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => openMenu()}>
+        <Button color='white' icon="menu" />
+      </TouchableOpacity>
   );
 }
 
@@ -33,8 +33,13 @@ const TopBar = () => {
   const openMainMenu = () => setMainVisible(true);
   const closeMainMenu = () => setMainVisible(false);
   const goHome = () => {
+    closeMainMenu();
     navigation.navigate("Main");
   };
+  const goToPayments = () => {
+    closeMainMenu();
+    navigation.navigate("Payments");
+  }
 
   const [profileVisible, setProfileVisible] = useState(false);
   const openProfileMenu = () => setProfileVisible(true);
@@ -56,6 +61,7 @@ const TopBar = () => {
           onDismiss={closeMainMenu}
           anchor={MainMenuAnchor(openMainMenu)}>
           <Menu.Item onPress={() => goHome()} title="Inicio" />
+          <Menu.Item onPress={() => goToPayments()} title="Mis Ingresos" />
         </Menu>
         <Text style={[styles.centerItem]}>Deliverar</Text>
         <Menu
