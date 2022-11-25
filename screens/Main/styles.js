@@ -40,8 +40,9 @@ const styles = StyleSheet.create({
       height: 120
     },
     noOrders: {
-      fontSize: 14,
+      fontSize: 16,
       marginVertical: 6,
+      fontWeight: '600',
       textAlign: 'center'
     }
   });

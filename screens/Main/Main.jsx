@@ -8,18 +8,18 @@ import CurrentDelivery from '../CurrentDelivery/CurrentDelivery';
 
 import { DeliveryContext } from '../../contexts/DeliveryContext';
 
-import { getOrders } from '../../services/order/orderService';
+import { getOrders, getCurrentOrder } from '../../services/order/orderService';
 
 const renderOffer = (item) => {
   return (
-    <View key={item.orderId} style={styles.listElement} >
+    <View key={item.id} style={styles.listElement} >
       <Order style={{flex: 1}} order={item}/>
     </View>
   );
 }
 
 export default function Main() {
-  const {currentDelivery} = useContext(DeliveryContext);
+  const {currentDelivery, setCurrentDelivery} = useContext(DeliveryContext);
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([])
 
@@ -45,8 +45,24 @@ export default function Main() {
         console.log(err);
       }
     }
+    const getCurrentDelivery = async () => {
+      try{
+        const res = await getCurrentOrder(user.idUser);
+        const current = await res.json();
+        if(current.data){
+            setCurrentDelivery(current.data);
+        }
+        else{
+          throw new Error("Error al obtener la orden actual");
+        }
+      }catch(err){
+        console.log("Error when retrieving order")
+        console.log(err);
+      }
+    }
     fetchOrders();
-  },[]);
+    //getCurrentDelivery();
+  },[currentDelivery.orderStatus]);
 
   return (
     <SafeAreaView style={{flex: 1, flexGrow: 1}} >
@@ -62,7 +78,7 @@ export default function Main() {
             <Text style={styles.title}>Entregas Cercanas</Text>
           </View>
           <ScrollView style={{width: orders.length==0?"95%":"100%"}} contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
-            { orders && orders.length!==0 ? ( orders.filter(order => currentDelivery ? order.name !== currentDelivery.name : true).map(order => renderOffer(order)) ) 
+            { orders && orders.length!==0 ? ( orders.filter(order => currentDelivery ? order.id !== currentDelivery.id : true).map(order => renderOffer(order)) ) 
             : 
               ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
                   <Text style={styles.noOrders}>{loading? "Cargando..." : "-- Aún no tenés entregas asignadas --"}</Text>

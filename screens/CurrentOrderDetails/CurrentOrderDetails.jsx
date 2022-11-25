@@ -10,10 +10,15 @@ import { UserContext } from '../../contexts/UserContext';
 
 import { updateCurrentOrder } from '../../services/order/orderService';
 
+const defualtImg = "https://e7.pngegg.com/pngimages/664/210/png-clipart-uber-eats-muncheez-delivery-online-food-ordering-food-delivery-food-logo.png";
+//const defualtImg = "https://www.clipartmax.com/png/middle/475-4757771_cook-food-order-dish-restaurant-icon-cook-food-order-dish-restaurant-icon.png";
+
 const getTotal = (order) => {
     let total = 0;
-    for (const meal of order.meals){
-        total += meal.price;
+    if(order && order.meals && order.meals.length > 0){
+        for (const meal of order.meals){
+            total += meal.price;
+        }
     }
     return total;
 }
@@ -56,7 +61,7 @@ const renderDetails = (order) => {
                         <View style={{width: '100%', marginVertical: 6}} key={meal.meal_id}>
                             <View style={{...styles.orderElements, width: '100%', display: 'flex', flexDirection: 'row', alignItems:'center'}}>
                                 <View style={{flex: 2.5, flexDirection: 'row', alignItems: 'center'}}>
-                                    <Image style={{width: 40, height: 40, borderRadius: 20}} source={{uri: `${meal.photo_url}`}}/>
+                                    <Image style={{width: 40, height: 40, borderRadius: 20}} source={{uri: `${meal.photo_url ? meal.photo_ur : defualtImg}`}}/>
                                     <Text style={{...styles.textDetail,...styles.orderElement}}>{meal.name}</Text>
                                 </View>
                                 <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
@@ -169,7 +174,7 @@ const CurrentOrderDetails = () => {
                 id : id,
                 orderStatus: newStatus
             }
-            let res = await updateCurrentOrder(user.idUser,reqBody);
+            let res = await updateCurrentOrder(reqBody);
             let updatedOrder = await res.json();
             console.log("Updated order res: ", updatedOrder);
             if(updatedOrder){
@@ -196,7 +201,7 @@ const CurrentOrderDetails = () => {
                         <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
                             <Button color="grey" icon="chevron-left" />
                         </TouchableOpacity>
-                        <Text style={styles.title}>Numero de {currentDelivery.orderType ? currentDelivery.orderType : "Pedido"}: #{currentDelivery.id}</Text>
+                        <Text style={styles.title}>Numero de {currentDelivery.orderType ? currentDelivery.orderType : "Pedido"}: #{currentDelivery.orderId ? currentDelivery.orderId : 1782}</Text>
                     </View>
                     <View style={styles.orderDetails}>
                         { currentDelivery? 

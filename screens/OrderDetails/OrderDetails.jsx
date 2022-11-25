@@ -10,10 +10,15 @@ import { DeliveryContext } from '../../contexts/DeliveryContext';
 import { createCurrentOrder } from '../../services/order/orderService';
 import { UserContext } from '../../contexts/UserContext';
 
+const defualtImg = "https://e7.pngegg.com/pngimages/664/210/png-clipart-uber-eats-muncheez-delivery-online-food-ordering-food-delivery-food-logo.png";
+//const defualtImg = "https://www.clipartmax.com/png/middle/475-4757771_cook-food-order-dish-restaurant-icon-cook-food-order-dish-restaurant-icon.png";
+
 const getTotal = (order) => {
     let total = 0;
-    for (const meal of order.meals){
-        total += meal.price;
+    if(order && order.meals && order.meals.length > 0){
+        for (const meal of order.meals){
+            total += meal.price;
+        }
     }
     return total;
 }
@@ -48,7 +53,7 @@ const renderDetails = (order) => {
                         <View style={{width: '100%', marginVertical: 6}} key={meal.meal_id}>
                             <View style={{...styles.orderElements, width: '100%', display: 'flex', flexDirection: 'row', alignItems:'center'}}>
                                 <View style={{flex: 2.5, flexDirection: 'row', alignItems: 'center'}}>
-                                    <Image style={{width: 40, height: 40, borderRadius: 20}} source={{uri: `${meal.photo_url}`}}/>
+                                    <Image style={{width: 40, height: 40, borderRadius: 20}} source={{uri: `${meal.photo_url ? meal.photo_url : defualtImg}`}}/>
                                     <Text style={{...styles.textDetail,...styles.orderElement}}>{meal.name}</Text>
                                 </View>
                                 <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>

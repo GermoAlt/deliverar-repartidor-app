@@ -14,13 +14,13 @@ export const getOrdersForUser = (idUser) => {
 // Current Order:
 
 export const getCurrentOrder = (idUser) => {
-    return executeApiCall(`${baseUrl}/${idUser}`,"GET");
+    return executeApiCall(`${currentOrderBaseUrl}/${idUser}`,"GET");
 }
 
 export const createCurrentOrder = (body) => {
     return executeApiCall(`${currentOrderBaseUrl}/`,"POST",body)
 }
 
-export const updateCurrentOrder = (idUser,body) => {
-    return executeApiCall(`${currentOrderBaseUrl}/${idUser}`,"PUT",body)
+export const updateCurrentOrder = (body) => {
+    return executeApiCall(`${currentOrderBaseUrl}/`,"PUT",body)
 }

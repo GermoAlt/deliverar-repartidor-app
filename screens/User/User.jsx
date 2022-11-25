@@ -11,7 +11,7 @@ export default function User() {
   const {user} = useContext(UserContext);
   const [prevOrders, setPrevOrders] = useState([]);
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchPrevOrders = async () => {
       try{
         console.log("Getting user's orders");
