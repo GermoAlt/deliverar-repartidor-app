@@ -82,10 +82,10 @@ const renderDetails = (order) => {
     );
 }
 
-const estados = ["Aceptado","Retirado","Entregado"]
+const estados = ["RETIRAR","RETIRADO","ENTREGADO"]
 const actions = ["¡Retiré el Pedido!","¡Entregué el Pedido!","Pedido entregado!"]
 
-const renderButtons = (status, handlePress) => {
+const renderButtons = (id, status, handlePress) => {
     const buttonActionLabel = () => {
         let buttonLabel = ""
         switch(status){
@@ -118,7 +118,7 @@ const renderButtons = (status, handlePress) => {
                 newStatus = null;
                 break;
         }
-        handlePress(newStatus)
+        handlePress(id, newStatus)
     }
 
     return (
@@ -129,7 +129,7 @@ const renderButtons = (status, handlePress) => {
                     mode="contained"
                     onPress={() => handleOnPress()}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={![...estados].filter(st => st !== "Entregado").includes(status)}
+                    disabled={![...estados].filter(st => st !== "ENTREGADO").includes(status)}
                     loading={false}
                     color='rgb(208, 9, 9)'
                 >
@@ -162,14 +162,19 @@ const CurrentOrderDetails = () => {
         navigation.goBack();
     }
 
-    const handleUpdateStatus = (newStatus) => {
+    const handleUpdateStatus = async (id,newStatus) => {
         try{
-            console.log("Actualizando delivery!");
-            //let res = await updateCurrentOrder(user.idUser,{status: newStatus});
-            let res = updateCurrentOrder(user.idUser,{status: newStatus});
-            console.log("Updated order res: ", res);
-            if(res){
-                setCurrentDelivery({...currentDelivery, status: newStatus});
+            console.log("Updating order...");
+            const reqBody = {
+                id : id,
+                orderStatus: newStatus
+            }
+            let res = await updateCurrentOrder(user.idUser,reqBody);
+            let updatedOrder = await res.json();
+            console.log("Updated order res: ", updatedOrder);
+            if(updatedOrder){
+                console.log("Updated data: ", updatedOrder.data);
+                setCurrentDelivery({...currentDelivery, orderStatus: newStatus});
                 goBack();
             }
             else{
@@ -202,7 +207,7 @@ const CurrentOrderDetails = () => {
                             </View> )
                         }
                     </View>
-                    {renderButtons(currentDelivery.status, handleUpdateStatus)}
+                    {renderButtons(currentDelivery.id,currentDelivery.orderStatus, handleUpdateStatus)}
                 </View>
             </Provider>
         </SafeAreaView>

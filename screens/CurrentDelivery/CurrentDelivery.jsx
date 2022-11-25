@@ -5,7 +5,7 @@ import styles from './styles';
 
 const renderDelivery = (item) => {
   return (
-    <View key={item.name} style={styles.listElement} >
+    <View key={item.orderId} style={styles.listElement} >
       <CurrentOrder style={{flex: 1}} delivery={item}/>
     </View>
   );

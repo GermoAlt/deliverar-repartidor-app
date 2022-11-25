@@ -8,7 +8,7 @@ const CurrentOrder = ({delivery}) => {
     const navigation = useNavigation();
 
     const renderLocation = (delivery) => {
-        if(delivery.status == "Aceptado"){
+        if(delivery.orderStatus == "RETIRAR"){
             return <Text style={{...styles.address,fontSize: 15}}>Retira en: {delivery.franchise_address}</Text>;
         }
         else{
@@ -23,7 +23,7 @@ const CurrentOrder = ({delivery}) => {
                     <View style={styles.cardLayout}>
                         <View style={styles.cardData}>
                             <Text style={styles.franchise}>Empresa: {delivery.name}</Text>
-                            <Text style={{...styles.franchise,fontSize: 16, marginVertical: 4, fontWeight: '600'}}>Estado: {delivery.status ? delivery.status : "Entregado"}</Text>
+                            <Text style={{...styles.franchise,fontSize: 16, marginVertical: 4, fontWeight: '600'}}>Estado: {delivery.orderStatus ? delivery.orderStatus : "ENTREGADO"}</Text>
                             {renderLocation(delivery)}
                         </View>
                         <View style={styles.cardDetails}>

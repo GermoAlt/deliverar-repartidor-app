@@ -11,21 +11,26 @@ export default function User() {
   const {user} = useContext(UserContext);
   const [prevOrders, setPrevOrders] = useState([]);
 
-  useEffect(/*async*/ () => {
-    try{
-      //const ordenesPrevias = await getOrdersForUser(user).json();
-      const ordenesPrevias = getOrdersForUser(user.idUser);
-      console.log("Prev Orders: ", ordenesPrevias);
-      if(ordenesPrevias){
-        setPrevOrders(ordenesPrevias);
+  useEffect(async () => {
+    const fetchPrevOrders = async () => {
+      try{
+        console.log("Getting user's orders");
+        const res = await getOrdersForUser(user.idUser);
+        const ordenesPrevias = await res.json();
+        console.log("Previous Orders adquired!");
+        if(ordenesPrevias && ordenesPrevias.data){
+          console.log("Ordenes del usuario: ", ordenesPrevias.data);
+          setPrevOrders(ordenesPrevias.data);
+        }
+        else{
+          throw new Error("No se obtuvo la respuesta esperada");
+        }
+      }catch(err){
+        console.log("Error al obtener ordenes previas para el usuario");
+        console.log(err);
       }
-      else{
-        throw new Error("No se obtuvo la respuesta esperada");
-      }
-    }catch(err){
-      console.log("Error al obtener ordenes previas para el usuario");
-      console.log(err);
     }
+    fetchPrevOrders();
   },[]);
 
   const renderPrevOrder = (order) => {

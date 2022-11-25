@@ -48,21 +48,28 @@ const Payments = ({navigation}) => {
         navigation.goBack();
     }
 
-    useEffect(/*async*/ () => {
-        try{
-            //let res = await getPayments(user.name);
-            let res = getPayments(user.idUser);
-            if(res){
-                setPayments(res);
+    useEffect(() => {
+        const fetchPayments = async () => {
+            try{
+                console.log("Getting payments...")
+                let pagos = getPayments(user.idUser);
+                //let res = await getPayments(user.idUser);
+                //let pagos = await res.json();
+                console.log("Payments retrived!: ", pagos);
+                if(pagos){
+                    console.log("Data pagos: ", pagos.data);
+                    //setPayments(res);
+                }
+                else{
+                    throw new Error("No se pudieron recuperar los pagos");
+                }
             }
-            else{
-                throw new Error("No se pudieron recuperar los pagos");
+            catch(err){
+                console.log("Error al intentar recuperar información de pagos para el usuario:")
+                console.log(err);
             }
         }
-        catch(err){
-            console.log("Error al intentar recuperar información de pagos para el usuario:")
-            console.log(err);
-        }
+        fetchPayments();
     },[]);
 
 

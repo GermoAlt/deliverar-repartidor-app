@@ -8,6 +8,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { DeliveryContext } from '../../contexts/DeliveryContext';
 import { createCurrentOrder } from '../../services/order/orderService';
+import { UserContext } from '../../contexts/UserContext';
 
 const getTotal = (order) => {
     let total = 0;
@@ -82,7 +83,7 @@ const renderButtons = (order,setDelivery) => {
                     mode="contained"
                     onPress={() => setDelivery()}
                     style={{ marginTop: 20, alignSelf: 'stretch' }}
-                    disabled={order && order.status === "Entregado"}
+                    disabled={order && order.orderStatus === "ENTREGADO"}
                     loading={false}
                     color='rgb(208, 9, 9)'
                 >
@@ -110,7 +111,8 @@ const OrderDetais = () => {
     const navigation = useNavigation()
     const route = useRoute()
     const order = route.params.order;
-    const {currentDelivery, setCurrentDelivery} = useContext(DeliveryContext);
+    const {user} = useContext(UserContext);
+    const {setCurrentDelivery} = useContext(DeliveryContext);
 
     const goBack = () => {
         navigation.goBack();
@@ -118,12 +120,21 @@ const OrderDetais = () => {
 
     const setDelivery = async () => {
         try{
-            console.log("Seteando delivery!");
-            //let res = await createCurrentOrder({...order, status: "Aceptado"});
-            let res = createCurrentOrder({...order, status: "Aceptado"});
-            console.log("New order res: ", res);
-            if(res){
-                setCurrentDelivery({...order,id: 1762, status: "Aceptado"});
+            console.log("Creating new order...");
+            const reqBody = {
+                "id": order.id,
+                "orderStatus": "RETIRAR",
+                "user": {
+                    "id": user.idUser,
+                    "username": user.name
+                }
+            }
+            let res = await createCurrentOrder(reqBody);
+            let newOrder = await res.json();
+            console.log("New order res: ", newOrder);
+            if(newOrder){
+                console.log("Data: ", newOrder.data);
+                setCurrentDelivery({...order,id: order.id, orderStatus: "RETIRAR"});
                 goBack();
             }
             else{
@@ -147,7 +158,7 @@ const OrderDetais = () => {
                         <TouchableOpacity style={{flex: 1}} onPress={() => goBack()}>
                             <Button color="grey" icon="chevron-left" />
                         </TouchableOpacity>
-                        <Text style={styles.title}>Detalles del {order.orderType}:</Text>
+                        <Text style={styles.title}>Detalles del {order.orderType ? order.orderType : "Pedido"}:</Text>
                     </View>
                     <View style={styles.orderDetails}>
                         { order? 

@@ -10,10 +10,9 @@ import { DeliveryContext } from '../../contexts/DeliveryContext';
 
 import { getOrders } from '../../services/order/orderService';
 
-
 const renderOffer = (item) => {
   return (
-    <View key={item.name} style={styles.listElement} >
+    <View key={item.orderId} style={styles.listElement} >
       <Order style={{flex: 1}} order={item}/>
     </View>
   );
@@ -21,24 +20,33 @@ const renderOffer = (item) => {
 
 export default function Main() {
   const {currentDelivery} = useContext(DeliveryContext);
+  const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([])
 
-  useEffect(/*async*/ () => {
-    try{
-      //const pedidos = await getOrders().json();
-      const pedidos = getOrders();
-      console.log("Orders retrieved!")
-      if(pedidos){
-        setOrders(pedidos)
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try{
+        setLoading(true)
+        console.log("Retrieving orders...")
+        const res = await getOrders();
+        const pedidos = await res.json();
+        console.log("Orders retrieved!")
+        if(pedidos && pedidos.data){
+          console.log("Pedidos: ", pedidos.data);
+          setOrders(pedidos.data);
+          setLoading(false);
+        }
+        else{
+          setLoading(false);
+          throw new Error("Ocurrio un error al buscar las ordenes disponibles");
+        }
+      }catch(err){
+        console.log("Error al obtener ordenes");
+        console.log(err);
       }
-      else{
-        throw new Error("Ocurrio un error al buscar las ordenes disponibles");
-      }
-    }catch(err){
-      console.log("Error al obtener ordenes");
-      console.log(err);
     }
-  })
+    fetchOrders();
+  },[]);
 
   return (
     <SafeAreaView style={{flex: 1, flexGrow: 1}} >
@@ -46,7 +54,7 @@ export default function Main() {
         <TopBar/>
         <View style={styles.container}>
           {
-            currentDelivery && currentDelivery.status !== "Entregado" ? 
+            currentDelivery && currentDelivery.orderStatus !== "ENTREGADO" ? 
             (<CurrentDelivery delivery={currentDelivery}/>) :
             <></>
           }
@@ -57,7 +65,7 @@ export default function Main() {
             { orders && orders.length!==0 ? ( orders.filter(order => currentDelivery ? order.name !== currentDelivery.name : true).map(order => renderOffer(order)) ) 
             : 
               ( <View style={{justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>
-                  <Text style={styles.noOrders}>-- Aún no tenés entregas asignadas --</Text>
+                  <Text style={styles.noOrders}>{loading? "Cargando..." : "-- Aún no tenés entregas asignadas --"}</Text>
               </View> )
             }
           </ScrollView>
