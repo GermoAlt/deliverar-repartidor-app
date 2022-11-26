@@ -62,7 +62,7 @@ export default function Main() {
     }
     fetchOrders();
     //getCurrentDelivery();
-  },[currentDelivery.orderStatus]);
+  },[]);
 
   return (
     <SafeAreaView style={{flex: 1, flexGrow: 1}} >

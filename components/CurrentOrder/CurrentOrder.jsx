@@ -27,7 +27,7 @@ const CurrentOrder = ({delivery}) => {
                             {renderLocation(delivery)}
                         </View>
                         <View style={styles.cardDetails}>
-                            <Text style={{...styles.details,fontWeight: '600', fontSize: 16, margin: '5%'}}>{delivery.orderType ? delivery.orderType.toUpperCase() : "PEDIDO"}</Text>
+                            <Text style={{...styles.details,fontWeight: '600', fontSize: 15, margin: '5%'}}>{delivery.orderType ? delivery.orderType.toUpperCase() : "PEDIDO"}</Text>
                             <Text style={styles.details}>Pulsa para ver los detalles</Text>
                         </View>
                     </View>
